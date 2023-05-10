@@ -1,3 +1,5 @@
+# Purpose
+Begin looking at how HoriontalPodAutoScaler works with a simple REST api
 
 # relevent k8s page
 - https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough
