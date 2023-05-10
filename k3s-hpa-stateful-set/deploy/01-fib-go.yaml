@@ -1,0 +1,44 @@
+# https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: fib-app
+spec:
+  selector:
+    matchLabels:
+      run: fib-app
+  serviceName: "fib-app"
+  template:
+    metadata:
+      labels:
+        run: fib-app # has to match .spec.selector.matchLabels
+    spec:
+      containers:
+      - name: fib-app
+        image: hpass:v1
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 3000 
+        resources:
+          limits:
+            cpu: 500m
+          requests:
+            cpu: 200m
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fib-app
+  labels:
+    run: fib-app
+spec:
+  ports:
+  - port: 3000
+  selector:
+    run: fib-app
+
+
+
+
+
+
