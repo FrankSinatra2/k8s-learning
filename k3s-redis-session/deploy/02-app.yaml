@@ -1,36 +1,39 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: redis 
+  name: app 
 spec:
   selector:
     matchLabels:
-      app: redis 
-  replicas: 1
+      app: app
+  replicas: 2
   template:
     metadata:
       labels:
-        app: redis 
+        app: app 
     spec:
       containers:
-      - name: redis
-        image: redis 
-        imagePullPolicy: IfNotPresent
+      - name: app
+        image: redis-session-app:v1 
+        imagePullPolicy: Never
         ports:
-        - containerPort: 6379
+        - containerPort: 3000
+        env:
+        - name: REDIS_HOST
+          value: "redis-svc:6379"
       restartPolicy: Always
 ---
 # https://kubernetes.io/docs/concepts/services-networking/service/
 apiVersion: v1
 kind: Service
 metadata:
-  name: redis-svc
+  name: app-svc
 spec:
   selector:
-    app: redis
+    app: app
   ports:
-  - name: redis-svc
-    port: 6379
-    targetPort: 6379 
+  - name: app-svc
+    port: 3000
+    targetPort: 3000
 ---
 
